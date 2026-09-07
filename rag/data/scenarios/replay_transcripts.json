@@ -1,0 +1,66 @@
+[
+  {
+    "id": "replay_refund_escalation",
+    "title": "Case #1042: Refund Escalation & Angry Customer",
+    "category": "Billing",
+    "turns": [
+      {
+        "role": "customer",
+        "message": "I was charged for a service I did not want. I asked for a refund three days ago and haven't heard back! This is unacceptable.",
+        "expected_intent": "REFUND_REQUEST",
+        "expected_frustration": 8,
+        "expected_escalation_risk": 75
+      },
+      {
+        "role": "agent",
+        "message": "Hello, I completely understand your frustration and apologize for the delay. Let me look up your account immediately to check on your refund status. Could you please share your order or account email?",
+        "coaching_feedback": "Great empathy and prompt acknowledgment. Avoided defensive language."
+      },
+      {
+        "role": "customer",
+        "message": "My email is markus.vance@example.com. If this is not resolved today I will file a credit card chargeback and report this.",
+        "expected_intent": "CHARGEBACK_THREAT",
+        "expected_frustration": 9,
+        "expected_escalation_risk": 85
+      },
+      {
+        "role": "agent",
+        "message": "Thank you Marcus. I have pulled up your transaction (#TR-9941). According to our 14-day refund policy, your request is fully eligible. I have submitted the manual refund approval right now, and you will see the funds credited in 3-5 business days.",
+        "coaching_feedback": "Excellent policy application and clear timeline resolution."
+      },
+      {
+        "role": "customer",
+        "message": "Thank you for taking care of it so quickly. I appreciate the clear update.",
+        "expected_intent": "RESOLUTION_CONFIRMATION",
+        "expected_frustration": 2,
+        "expected_escalation_risk": 10
+      }
+    ]
+  },
+  {
+    "id": "replay_login_lockout",
+    "title": "Case #2091: 2FA Failure & Account Lock",
+    "category": "Troubleshooting",
+    "turns": [
+      {
+        "role": "customer",
+        "message": "I cannot log into my account. It says too many attempts and account is locked. I need my dashboard immediately!",
+        "expected_intent": "ACCOUNT_LOCKED",
+        "expected_frustration": 7,
+        "expected_escalation_risk": 60
+      },
+      {
+        "role": "agent",
+        "message": "Hi there! I understand how important it is to access your dashboard. For your security, accounts enter a temporary 15-minute lockout after multiple attempts. You can wait for the timer to expire or trigger a password reset via email.",
+        "coaching_feedback": "Clear explanation of the lockout policy without requiring private password details."
+      },
+      {
+        "role": "customer",
+        "message": "Okay, let me try the password reset link to my email right now.",
+        "expected_intent": "PASSWORD_RESET",
+        "expected_frustration": 4,
+        "expected_escalation_risk": 25
+      }
+    ]
+  }
+]

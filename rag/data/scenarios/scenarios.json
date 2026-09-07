@@ -1,0 +1,50 @@
+[
+  {
+    "id": "scenario_refund_dispute",
+    "title": "Subscription Refund Dispute",
+    "category": "Billing & Payments",
+    "persona": "Frustrated & Impatient",
+    "customer_name": "Marcus Vance",
+    "initial_frustration": 8,
+    "initial_mood": "Angry",
+    "initial_message": "I was charged .99 for an annual renewal that I explicitly cancelled last week! I demand an immediate refund and an explanation right now.",
+    "context": "Customer cancelled after the auto-renewal date according to logs, but claims they tried to cancel prior. Policy allows full refund within 14 days if unused.",
+    "goal": "Explain policy calmly, verify the charge and cancellation status, and guide the customer through the refund request process."
+  },
+  {
+    "id": "scenario_locked_account",
+    "title": "Account Locked & 2FA Failure",
+    "category": "Account Access",
+    "persona": "Anxious Tech Novice",
+    "customer_name": "Elena Rostova",
+    "initial_frustration": 6,
+    "initial_mood": "Anxious",
+    "initial_message": "Help! I am locked out of my account because I'm not getting the verification SMS codes. I have an important presentation in 30 minutes and I can't access my files!",
+    "context": "Customer entered wrong password 5 times triggering temporary lock. 2FA carrier delay reported in their region. Account unlocks automatically after 15 mins or via email recovery.",
+    "goal": "Reassure the customer, explain the lock cooldown period, provide backup email verification steps, and avoid asking for passwords."
+  },
+  {
+    "id": "scenario_cancellation_request",
+    "title": "Service Cancellation & Data Deletion",
+    "category": "Policies & Subscriptions",
+    "persona": "Firm & Direct",
+    "customer_name": "David Chen",
+    "initial_frustration": 4,
+    "initial_mood": "Neutral",
+    "initial_message": "I would like to cancel my Pro subscription effective immediately and request full deletion of all my personal data in accordance with your privacy policy.",
+    "context": "Customer wants immediate cancellation and GDPR/CCPA data erasure. Policy specifies subscription remains active until billing cycle end unless manual immediate termination is requested.",
+    "goal": "Provide clear cancellation steps, explain billing cycle remaining access, and guide to the data privacy request form."
+  },
+  {
+    "id": "scenario_payment_double_charge",
+    "title": "Duplicate Payment on Credit Card",
+    "category": "Billing & Payments",
+    "persona": "Skeptical & Concerned",
+    "customer_name": "Sarah Jenkins",
+    "initial_frustration": 7,
+    "initial_mood": "Frustrated",
+    "initial_message": "My bank statement shows two charges of  on the same day for my monthly invoice. Why was I charged twice, and when will this be corrected?",
+    "context": "One charge is an authorization hold from a payment retry, the other is the settled invoice. Authorization holds fall off within 3-5 business days.",
+    "goal": "Clarify the difference between authorization hold and settled charge, explain timeline, and offer to inspect transaction IDs."
+  }
+]
