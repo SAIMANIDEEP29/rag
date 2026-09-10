@@ -66,12 +66,52 @@ class CoachingOrchestrator:
             conversation_history=conversation_history
         )
 
+        # 5. Automatic Scenario Detection
+        detected_scenario = CoachingOrchestrator.detect_scenario(customer_message)
+
         return {
             "sentiment": sentiment_data,
             "escalation": escalation_data,
             "knowledge": knowledge_items,
             "coaching": coaching_data,
+            "detected_scenario": detected_scenario,
             "turn_count": turn_count
+        }
+
+    @staticmethod
+    def detect_scenario(customer_message: str) -> dict:
+        """
+        Automatically detects which support scenario and category
+        matches the incoming customer message.
+        """
+        scenarios = CoachingOrchestrator.load_scenarios()
+        if not scenarios:
+            return {"scenario": None, "confidence": 0, "title": "General Support", "category": "General Inquiry"}
+
+        msg_lower = customer_message.lower()
+        scores = {}
+        for sc in scenarios:
+            score = 25
+            for word in sc.get("title", "").lower().split() + sc.get("category", "").lower().split():
+                if len(word) > 3 and word in msg_lower:
+                    score += 15
+            if sc["id"] == "scenario_refund_dispute" and any(w in msg_lower for w in ["refund", "renewal", "reimburse", "annual", "chargeback"]):
+                score += 45
+            elif sc["id"] == "scenario_locked_account" and any(w in msg_lower for w in ["lock", "locked", "2fa", "code", "login", "password", "access"]):
+                score += 45
+            elif sc["id"] == "scenario_cancellation_request" and any(w in msg_lower for w in ["cancel", "delete", "privacy", "erasure", "terminate"]):
+                score += 45
+            elif sc["id"] == "scenario_payment_double_charge" and any(w in msg_lower for w in ["twice", "two charges", "double", "duplicate", "hold"]):
+                score += 45
+            scores[sc["id"]] = min(98, score)
+
+        best_id = max(scores, key=scores.get)
+        best_sc = next(s for s in scenarios if s["id"] == best_id)
+        return {
+            "scenario": best_sc,
+            "confidence": scores[best_id],
+            "title": best_sc.get("title"),
+            "category": best_sc.get("category")
         }
 
     @staticmethod

@@ -698,8 +698,21 @@ col_chat, col_copilot = st.columns([6, 4], gap="medium")
 with col_chat:
     
     # 1. Customer Context Header
-    cust_name = st.session_state.current_scenario.get("customer_name", "Marcus Vance") if st.session_state.mode == "Simulator Mode" else ("Analyst Workspace" if st.session_state.mode == "Manual Mode" else "Recorded Transcript")
-    cust_plan = st.session_state.current_scenario.get("category", "Support Case") if st.session_state.mode == "Simulator Mode" else "General Support"
+    if st.session_state.mode == "Simulator Mode":
+        cust_name = st.session_state.current_scenario.get("customer_name", "Marcus Vance")
+        cust_plan = st.session_state.current_scenario.get("category", "Support Case")
+    elif st.session_state.mode == "Manual Mode":
+        if st.session_state.coaching_data and "detected_scenario" in st.session_state.coaching_data:
+            det = st.session_state.coaching_data["detected_scenario"]
+            det_sc = det.get("scenario")
+            cust_name = det_sc.get("customer_name", "Live Customer") if det_sc else "Live Customer"
+            cust_plan = f"{det.get('title', 'General Support')} · {det.get('confidence', 85)}% match"
+        else:
+            cust_name = "Live Customer Inquiry"
+            cust_plan = "Awaiting customer message..."
+    else:
+        cust_name = "Recorded Transcript"
+        cust_plan = st.session_state.selected_transcript.get("category", "Recorded Case")
     
     frust = st.session_state.customer_frustration if st.session_state.mode == "Simulator Mode" else 5
     if st.session_state.coaching_data and "sentiment" in st.session_state.coaching_data:
@@ -867,7 +880,19 @@ with col_copilot:
 
         esc_color = "#DC2626" if esc_score >= 70 else ("#D97706" if esc_score >= 40 else "#16A34A")
 
+        det_sc_row = ""
+        if "detected_scenario" in coach and coach["detected_scenario"].get("title"):
+            det_t = coach["detected_scenario"]["title"]
+            det_c = coach["detected_scenario"].get("confidence", 85)
+            det_sc_row = f"""
+            <div class="signal-item">
+                <span class="signal-k">Scenario</span>
+                <span class="signal-v" style="color: #2563EB;">{det_t} ({det_c}%)</span>
+            </div>
+            """
+
         st.markdown(f"""
+            {det_sc_row}
             <div class="signal-item">
                 <span class="signal-k">Sentiment</span>
                 <span class="signal-v">{sent_mood} ({frust_level}/10)</span>
