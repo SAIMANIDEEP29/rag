@@ -46,9 +46,7 @@ st.markdown("""
     }
 
     /* Force all Streamlit markdown containers to use dark text */
-    [data-testid="stMarkdownContainer"] {
-        color: var(--text-primary) !important;
-    }
+    [data-testid="stMarkdownContainer"], 
     [data-testid="stMarkdownContainer"] p, 
     [data-testid="stMarkdownContainer"] span, 
     [data-testid="stMarkdownContainer"] div, 
@@ -57,17 +55,44 @@ st.markdown("""
         color: var(--text-primary) !important;
     }
 
-    /* Remove Streamlit default top headers */
-    header[data-testid="stHeader"], .stApp > header {
-        display: none !important;
+    /* Make header transparent but keep collapsed sidebar button visible & accessible */
+    header[data-testid="stHeader"] {
+        background-color: transparent !important;
+        height: 0px !important;
     }
+
+    /* Prominent Sidebar Expand Button (when collapsed) */
+    div[data-testid="collapsedControl"] {
+        display: flex !important;
+        visibility: visible !important;
+        position: fixed !important;
+        top: 14px !important;
+        left: 14px !important;
+        z-index: 999999 !important;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D1D5DB !important;
+        border-radius: 6px !important;
+        padding: 4px 8px !important;
+        color: #111827 !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+        cursor: pointer !important;
+    }
+    div[data-testid="collapsedControl"]:hover {
+        background-color: #F3F4F6 !important;
+        border-color: #9CA3AF !important;
+    }
+    div[data-testid="collapsedControl"] svg {
+        stroke: #111827 !important;
+        fill: #111827 !important;
+    }
+
     .block-container {
         padding: 1rem 2rem 2rem 2rem !important;
         max-width: 100% !important;
     }
 
     /* --------------------------------------------- */
-    /* TOP NAVIGATION (56px)                         */
+    /* TOP NAVIGATION (54px)                         */
     /* --------------------------------------------- */
     .top-navbar {
         display: flex;
@@ -120,13 +145,13 @@ st.markdown("""
     }
 
     /* --------------------------------------------- */
-    /* SIDEBAR NAVIGATION (240px)                    */
+    /* SIDEBAR NAVIGATION                            */
     /* --------------------------------------------- */
     section[data-testid="stSidebar"] {
         background-color: var(--surface) !important;
         border-right: 1px solid var(--border) !important;
-        padding: 1.25rem 0.75rem !important;
-        width: 250px !important;
+        padding: 1rem 0.75rem !important;
+        z-index: 1000 !important;
     }
     section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p,
     section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] span {
@@ -139,21 +164,21 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 0.06em;
         color: var(--text-muted) !important;
-        margin-top: 18px;
+        margin-top: 16px;
         margin-bottom: 8px;
-        padding-left: 8px;
+        padding-left: 6px;
     }
 
-    /* Fix Radio Navigation in Sidebar */
+    /* Radio Navigation in Sidebar */
     div[data-testid="stRadio"] {
         margin-bottom: 4px;
     }
     div[data-testid="stRadio"] > div {
-        gap: 2px !important;
+        gap: 3px !important;
     }
     div[data-testid="stRadio"] label {
         background-color: transparent !important;
-        padding: 6px 10px !important;
+        padding: 7px 10px !important;
         border-radius: 6px !important;
         cursor: pointer !important;
         transition: all 150ms ease !important;
@@ -175,25 +200,6 @@ st.markdown("""
     div[data-testid="stRadio"] label:has(input:checked) span {
         color: #1D4ED8 !important;
         font-weight: 600 !important;
-    }
-
-    .nav-link-static {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 7px 10px;
-        border-radius: 6px;
-        font-size: 13px;
-        font-weight: 500;
-        color: var(--text-secondary) !important;
-        text-decoration: none;
-        margin-bottom: 2px;
-        cursor: pointer;
-        transition: all 150ms ease;
-    }
-    .nav-link-static:hover {
-        background-color: #F3F4F6;
-        color: var(--text-primary) !important;
     }
 
     /* --------------------------------------------- */
@@ -261,10 +267,8 @@ st.markdown("""
     /* --------------------------------------------- */
     /* BUTTONS FIXES                                 */
     /* --------------------------------------------- */
-    /* Primary Submit Button (Send Response / Analyze) */
     div[data-testid="stFormSubmitButton"] button,
-    div[data-testid="stForm"] button[kind="primaryFormSubmit"],
-    .primary-btn button {
+    div[data-testid="stForm"] button[kind="primaryFormSubmit"] {
         background-color: #111827 !important;
         color: #FFFFFF !important;
         border: 1px solid #111827 !important;
@@ -286,7 +290,6 @@ st.markdown("""
         color: #FFFFFF !important;
     }
 
-    /* Secondary Neutral Buttons (Insert, Reset, Timeline) */
     .stButton > button {
         background-color: var(--surface) !important;
         color: var(--text-secondary) !important;
@@ -486,25 +489,31 @@ st.markdown("""
         margin-bottom: 8px;
     }
 
-    /* Expander override */
-    .streamlit-expanderHeader {
-        background-color: var(--surface) !important;
-        border: 1px solid var(--border) !important;
-        border-radius: 6px !important;
-        color: var(--text-primary) !important;
-        font-size: 13px !important;
-        font-weight: 500 !important;
+    /* Mode Pill Buttons in Header */
+    .nav-pill-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 12.5px;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid var(--border-strong);
+        background: #FFFFFF;
+        color: var(--text-secondary);
+        transition: all 150ms ease;
     }
-    .streamlit-expanderHeader p {
-        color: var(--text-primary) !important;
+    .nav-pill-btn:hover {
+        background: #F3F4F6;
+        color: var(--text-primary);
     }
-    .streamlit-expanderContent {
-        background-color: var(--surface) !important;
-        border: 1px solid var(--border) !important;
-        border-top: none !important;
-        border-radius: 0 0 6px 6px !important;
-        color: var(--text-secondary) !important;
-        font-size: 12.5px !important;
+    .nav-pill-btn.active {
+        background: #EFF6FF;
+        border-color: #BFDBFE;
+        color: #1D4ED8;
+        font-weight: 600;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -544,7 +553,7 @@ if "draft_reply" not in st.session_state:
 
 
 # --------------------------------------------------
-# SIDEBAR NAVIGATION
+# SIDEBAR NAVIGATION (Focused & 100% Functional)
 # --------------------------------------------------
 with st.sidebar:
     st.markdown("""
@@ -557,7 +566,7 @@ with st.sidebar:
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown('<div class="nav-category">Workspace</div>', unsafe_allow_html=True)
+    st.markdown('<div class="nav-category">Workspace Mode</div>', unsafe_allow_html=True)
     
     mode_options = ["Live Simulator", "Manual Analysis", "Replay Library"]
     current_mode_idx = 0 if st.session_state.mode == "Simulator Mode" else (1 if st.session_state.mode == "Manual Mode" else 2)
@@ -577,35 +586,11 @@ with st.sidebar:
         st.session_state.replay_index = 0
         st.rerun()
 
-    st.markdown('<div class="nav-category">Training</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div style="display: flex; flex-direction: column; gap: 2px;">
-        <div class="nav-link-static">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path></svg>
-            <span style="color: #374151;">Knowledge Base</span>
-        </div>
-        <div class="nav-link-static">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2"><path d="M3 3v18h18"></path><path d="m19 9-5 5-4-4-3 3"></path></svg>
-            <span style="color: #374151;">Performance</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("<hr style='margin: 16px 0; border: none; border-top: 1px solid #E5E7EB;'>", unsafe_allow_html=True)
 
-    st.markdown('<div class="nav-category">System</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div>
-        <div class="nav-link-static">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-            <span style="color: #374151;">Settings</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # Bottom Context Selector
+    # Mode Context & Controls
     if st.session_state.mode == "Simulator Mode":
-        st.markdown('<div class="nav-category">Scenario</div>', unsafe_allow_html=True)
+        st.markdown('<div class="nav-category">Scenario Configuration</div>', unsafe_allow_html=True)
         scenario_titles = [s["title"] for s in scenarios]
         selected_title = st.selectbox("Scenario Selector", scenario_titles, label_visibility="collapsed")
         chosen_scen = next((s for s in scenarios if s["title"] == selected_title), scenarios[0])
@@ -621,6 +606,7 @@ with st.sidebar:
             )
             st.rerun()
 
+        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
         if st.button("Reset Scenario", use_container_width=True):
             st.session_state.customer_frustration = st.session_state.current_scenario["initial_frustration"]
             st.session_state.customer_mood = st.session_state.current_scenario["initial_mood"]
@@ -632,7 +618,7 @@ with st.sidebar:
             st.rerun()
 
     elif st.session_state.mode == "Replay Mode":
-        st.markdown('<div class="nav-category">Transcript</div>', unsafe_allow_html=True)
+        st.markdown('<div class="nav-category">Recorded Transcript</div>', unsafe_allow_html=True)
         transcript_titles = [t["title"] for t in replay_transcripts]
         selected_trans_title = st.selectbox("Transcript Selector", transcript_titles, label_visibility="collapsed")
         chosen_trans = next((t for t in replay_transcripts if t["title"] == selected_trans_title), replay_transcripts[0])
@@ -644,8 +630,18 @@ with st.sidebar:
             st.session_state.coaching_data = None
             st.rerun()
 
+        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
         if st.button("Reset Timeline", use_container_width=True):
             st.session_state.replay_index = 0
+            st.session_state.messages = []
+            st.session_state.coaching_data = None
+            st.rerun()
+
+    elif st.session_state.mode == "Manual Mode":
+        st.markdown('<div class="nav-category">Analyst Tools</div>', unsafe_allow_html=True)
+        st.caption("Paste customer queries into the central workspace to receive real-time intent, escalation risk, and coaching guidance.")
+        st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+        if st.button("Clear Analyst Session", use_container_width=True):
             st.session_state.messages = []
             st.session_state.coaching_data = None
             st.rerun()
